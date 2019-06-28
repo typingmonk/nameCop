@@ -1,2 +1,6 @@
 # config
 config.js
+
+# npm related
+package-lock.json
+/node_modules
