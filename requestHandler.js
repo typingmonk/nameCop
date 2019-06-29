@@ -22,16 +22,25 @@ function handler(response, postData, copLogic, config) {
         var message = "";
         var date = 0;
 
-        //Message comes from chat (群組)
         if ("channel_post" in message_info) {
+            //(channel) text
             chat_id = message_info.channel_post.chat.id;
             message = message_info.channel_post.text;
             date = message_info.channel_post.date;
-        //Message comes from private person (私訊)
+        } else if ("edited_channel_post" in message_info) {
+            //(channel) edit_text
+            //For avoid confusion. The bot don't check edited message.
         } else if ("message" in message_info) {
+            //(chat, group) text
             chat_id = message_info.message.chat.id;
-            message = message_info.message.text;
+            if ("text" in message_info.message) {
+                //When invite bot in to group. there are no "text" in json.  
+                message = message_info.message.text;
+            }
             date = message_info.message.date;
+        } else if ("edited_message" in message_info) {
+            //(chat, group) edit_text
+            //For avoid confusion. The bot don't check edited message.
         }
 
         console.log("The chat id is : " + chat_id);
